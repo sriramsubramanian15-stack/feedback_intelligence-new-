@@ -42,7 +42,11 @@ def analyze_batch(rows, company, context, rules):
             "or insufficient information for reliable classification. "
             "status=irrelevant: clearly unrelated to the company/product context or spam. "
             "status=no_action: relevant praise/general discussion with no requested fix or update. "
-            "rule_ids must be empty unless status=matched. Provide a short grounded reason. "
+            "If status=matched, rule_ids MUST contain at least one supplied topic ID. "
+            "If status is needs_review, irrelevant, or no_action, rule_ids MUST be empty. "
+            "Never return status=matched with an empty rule_ids list. "
+            "Use the supplied topic labels and phrases as semantic examples: the feedback does not "
+            "need to contain the exact phrase to match a topic. Provide a short grounded reason. "
             "Never assign priority. Never invent customer details."
         )}, {"role": "user", "content": json.dumps(payload, ensure_ascii=False)}],
         text_format=Batch,
